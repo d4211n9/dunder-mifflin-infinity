@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\data-access\data-access.csproj" />
+  </ItemGroup>
+
 </Project>

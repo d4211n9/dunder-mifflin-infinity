@@ -1,9 +1,9 @@
 using data_access.data_transfer_objects;
 using data_access.models;
 
-namespace data_access.interfaces;
+namespace service.interfaces;
 
-public interface ICustomerRepository
+public interface ICustomerService
 {
     SelectionWithPaginationDto<Customer> GetCustomers(CustomerSearchDto customerSearchDto);
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using data_access.Models;
+using data_access.models;
 
 namespace data_access;
 
