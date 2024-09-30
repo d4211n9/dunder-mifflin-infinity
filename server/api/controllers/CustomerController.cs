@@ -19,6 +19,7 @@ public class CustomerController(ICustomerService customerService) : ControllerBa
         catch (Exception e)
         {
             HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            HttpContext.Response.WriteAsJsonAsync("Something went wrong");
             return null;
         }
     }
