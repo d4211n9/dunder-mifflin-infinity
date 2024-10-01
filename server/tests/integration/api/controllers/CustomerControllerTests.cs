@@ -55,11 +55,11 @@ public class CustomerControllerTests : BaseIntegrationTest
     private async Task CreateMockCustomers()
     {
         IList<Customer> mockCustomers = new List<Customer>();
-        mockCustomers.Add(FakeCustomers._fakeCustomer1);
-        mockCustomers.Add(FakeCustomers._fakeCustomer2);
-        mockCustomers.Add(FakeCustomers._fakeCustomer3);
-        mockCustomers.Add(FakeCustomers._fakeCustomer4);
-        mockCustomers.Add(FakeCustomers._fakeCustomer5); 
+        mockCustomers.Add(FakeCustomers.FakeCustomer1);
+        mockCustomers.Add(FakeCustomers.FakeCustomer2);
+        mockCustomers.Add(FakeCustomers.FakeCustomer3);
+        mockCustomers.Add(FakeCustomers.FakeCustomer4);
+        mockCustomers.Add(FakeCustomers.FakeCustomer5); 
         
         await _setup.DbContextInstance.Customers.AddRangeAsync(mockCustomers);
         await _setup.DbContextInstance.SaveChangesAsync();

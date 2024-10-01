@@ -4,7 +4,7 @@ namespace tests.helper;
 
 public class FakeCustomers
 {
-    public static readonly Customer _fakeCustomer1 = new Customer()
+    public static readonly Customer FakeCustomer1 = new Customer()
     {
         Id = 1,
         Address = "Amager Strandvej 100",
@@ -13,7 +13,7 @@ public class FakeCustomers
         Orders = new List<Order>()
     };
     
-    public static readonly Customer _fakeCustomer2 = new Customer()
+    public static readonly Customer FakeCustomer2 = new Customer()
     {
         Id = 2,
         Address = "Brolæggervej 16",
@@ -22,7 +22,7 @@ public class FakeCustomers
         Orders = new List<Order>()
     };
     
-    public static readonly Customer _fakeCustomer3 = new Customer()
+    public static readonly Customer FakeCustomer3 = new Customer()
     {
         Id = 3,
         Address = "Storegade 28A",
@@ -31,7 +31,7 @@ public class FakeCustomers
         Orders = new List<Order>()
     };
     
-    public static readonly Customer _fakeCustomer4 = new Customer()
+    public static readonly Customer FakeCustomer4 = new Customer()
     {
         Id = 4,
         Address = "Islevhusvej 32",
@@ -40,7 +40,7 @@ public class FakeCustomers
         Orders = new List<Order>()
     };
     
-    public static readonly Customer _fakeCustomer5 = new Customer()
+    public static readonly Customer FakeCustomer5 = new Customer()
     {
         Id = 5,
         Address = "Zeltnersvej 4",
