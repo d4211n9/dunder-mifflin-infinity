@@ -17,7 +17,9 @@ public class CustomerControllerTests : BaseIntegrationTest
     public CustomerControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper) {}
     
     [Theory]
-    [InlineData("Pandora", 1, 5, 1, 1)]
+    [InlineData("SearchQuery=Pandora", 1, 5, 1, 1)]
+    [InlineData("", 1, 5, 5, 1)]
+    [InlineData("", 2, 3, 2, 2)]
     public async void GetCustomers_CanFilterForCorrectCustomersTest(
         string searchQuery,
         int pageNumber,
@@ -32,7 +34,7 @@ public class CustomerControllerTests : BaseIntegrationTest
         // Act 
         var response = await client.GetAsync("/api/" + 
                                             nameof(Customer) + 
-                                             "?SearchQuery=" + searchQuery + 
+                                             "?" + searchQuery + 
                                              "&PaginationDto.PageNumber=" + pageNumber + 
                                              "&PaginationDto.PageSize=" + pageSize)
             .Result.Content

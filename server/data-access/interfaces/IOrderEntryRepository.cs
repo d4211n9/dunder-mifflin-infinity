@@ -3,7 +3,7 @@ using data_access.models;
 
 namespace data_access.interfaces;
 
-public interface IOrderEntriesRepository
+public interface IOrderEntryRepository
 {
     OrderEntry CreateOrderEntry(CreateOrderEntryDto createOrderEntryDto);
 }

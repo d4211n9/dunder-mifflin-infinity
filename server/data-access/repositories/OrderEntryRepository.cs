@@ -4,7 +4,7 @@ using data_access.models;
 
 namespace data_access.repositories;
 
-public class OrderEntriesRepository : IOrderEntriesRepository
+public class OrderEntryRepository : IOrderEntryRepository
 {
     public OrderEntry CreateOrderEntry(CreateOrderEntryDto createOrderEntryDto)
     {

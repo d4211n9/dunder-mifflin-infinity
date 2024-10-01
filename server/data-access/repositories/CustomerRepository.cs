@@ -22,7 +22,7 @@ public class CustomerRepository(MyDbContext myDbContext) : ICustomerRepository
             Selection = matchingCustomers
                 .Skip((customerSearchDto.PaginationDto.PageNumber - 1) * customerSearchDto.PaginationDto.PageSize)
                 .Take(customerSearchDto.PaginationDto.PageSize),
-            TotalPages = matchingCustomers.Count()
+            TotalPages = (int) Math.Ceiling((double) matchingCustomers.Count() / customerSearchDto.PaginationDto.PageSize)
         };
     }
 }

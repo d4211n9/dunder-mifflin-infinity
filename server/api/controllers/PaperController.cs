@@ -1,4 +1,3 @@
-using data_access.data_transfer_objects;
 using data_access.models;
 using Microsoft.AspNetCore.Mvc;
 using service.interfaces;
@@ -7,14 +6,15 @@ namespace api.controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CustomerController(ICustomerService customerService) : ControllerBase
+public class PaperController(IPaperPropertyService paperPropertyService) : ControllerBase
 {
-    [HttpGet]
-    public ActionResult<SelectionWithPaginationDto<Customer>> GetCustomers([FromQuery] CustomerSearchDto customerSearchDto)
+    [Route("property/create/{propertyName}")]
+    [HttpPost]
+    public ActionResult<Property> CreateProperty([FromRoute] string propertyName)
     {
         try
         {
-            return Ok(customerService.GetCustomers(customerSearchDto));
+            return Ok(paperPropertyService.CreateProperty(propertyName));
         }
         catch (Exception e)
         {

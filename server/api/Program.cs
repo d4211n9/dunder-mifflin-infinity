@@ -22,8 +22,10 @@ public class Program
         builder.Services.AddControllers();
 
         builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+        builder.Services.AddScoped<IPaperPropertyRepository, PaperPropertyRepository>();
 
         builder.Services.AddScoped<ICustomerService, CustomerService>();
+        builder.Services.AddScoped<IPaperPropertyService, PaperPropertyService>();
 
         // Add services to the container.
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,8 +1,8 @@
 using data_access.models;
 
-namespace data_access.interfaces;
+namespace service.interfaces;
 
-public interface IPaperPropertiesRepository
+public interface IPaperPropertyService
 {
     Property CreateProperty(string propertyName);
 }
