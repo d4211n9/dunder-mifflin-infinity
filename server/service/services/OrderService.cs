@@ -12,9 +12,9 @@ public class OrderService(IOrderRepository orderRepository) : IOrderService
         return await orderRepository.ChangeStatus(changeOrderStatusDto);
     }
 
-    public IEnumerable<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto)
+    public SelectionWithPaginationDto<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto)
     {
-        throw new NotImplementedException();
+        return orderRepository.GetOrdersForCustomer(getCustomerOrdersDto);
     }
 
     public IEnumerable<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto)

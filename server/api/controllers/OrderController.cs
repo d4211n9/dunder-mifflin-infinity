@@ -1,4 +1,5 @@
 using data_access.data_transfer_objects;
+using data_access.models;
 using Microsoft.AspNetCore.Mvc;
 using service.interfaces;
 
@@ -25,6 +26,22 @@ public class OrderController(IOrderService orderService) : ControllerBase
         {
             HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError; 
             await HttpContext.Response.WriteAsJsonAsync("Something went wrong");
+            throw;
+        }
+    }
+
+    [Route("customer")]
+    [HttpGet]
+    public ActionResult<SelectionWithPaginationDto<Order>> GetOrdersForCustomer([FromQuery] GetCustomerOrdersDto getCustomerOrdersDto)
+    {
+        try
+        {
+            return Ok(orderService.GetOrdersForCustomer(getCustomerOrdersDto));
+        }
+        catch (Exception e)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            HttpContext.Response.WriteAsync("Something went wrong");
             throw;
         }
     }

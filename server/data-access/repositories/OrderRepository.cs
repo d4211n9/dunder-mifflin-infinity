@@ -30,9 +30,18 @@ public class OrderRepository(MyDbContext myDbContext) : IOrderRepository
         return (await myDbContext.SaveChangesAsync()) > 0;
     }
 
-    public IEnumerable<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto)
+    public SelectionWithPaginationDto<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto)
     {
-        throw new NotImplementedException();
+        IEnumerable<Order> ordersOfCustomer = myDbContext.Orders
+            .Where(order => order.CustomerId == getCustomerOrdersDto.CustomerId);
+
+        return new SelectionWithPaginationDto<Order>
+        {
+            Selection = ordersOfCustomer
+                .Skip((getCustomerOrdersDto.PaginationDto.PageNumber - 1) * getCustomerOrdersDto.PaginationDto.PageSize)
+                .Take(getCustomerOrdersDto.PaginationDto.PageSize),
+            TotalPages = (int) Math.Ceiling((double) ordersOfCustomer.Count() / getCustomerOrdersDto.PaginationDto.PageSize)
+        };
     }
 
     public IEnumerable<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto)

@@ -6,7 +6,7 @@ namespace service.interfaces;
 public interface IOrderService
 {
     Task<bool> ChangeStatus(ChangeOrderStatusDto changeOrderStatusDto);
-    IEnumerable<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto);
+    SelectionWithPaginationDto<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto);
     IEnumerable<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto);
     Order CreateOrder(CreateOrderDto createOrderDto);
 }
