@@ -17,9 +17,9 @@ public class OrderService(IOrderRepository orderRepository) : IOrderService
         return orderRepository.GetOrdersForCustomer(getCustomerOrdersDto);
     }
 
-    public IEnumerable<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto)
+    public SelectionWithPaginationDto<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto)
     {
-        throw new NotImplementedException();
+        return orderRepository.GetCustomerOrders(customerOrdersSearchDto);
     }
 
     public Order CreateOrder(CreateOrderDto createOrderDto)

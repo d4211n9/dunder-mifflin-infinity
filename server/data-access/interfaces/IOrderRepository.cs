@@ -7,6 +7,6 @@ public interface IOrderRepository
 {
     Task<bool> ChangeStatus(ChangeOrderStatusDto changeOrderStatusDto);
     SelectionWithPaginationDto<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto);
-    IEnumerable<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto);
+    SelectionWithPaginationDto<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto);
     Order CreateOrder(CreateOrderDto createOrderDto);
 }

@@ -20,7 +20,7 @@ public class OrderControllerTests : BaseIntegrationTest
         // Arrange
         var client = CreateClient();
         string updatedStatus = "Delivered";
-        Order mockOrder = await CreateMockOrder();
+        Order mockOrder = await CreateMockOrder(FakeCustomers.FakeCustomer1, FakeOrders.FakeOrder1);
         string oldStatus = mockOrder.Status;
         ChangeOrderStatusDto changeOrderStatusDto = new ChangeOrderStatusDto()
         {
@@ -43,11 +43,10 @@ public class OrderControllerTests : BaseIntegrationTest
     }
 
     [Theory]
-    [InlineData(1, 1, 5, 5, 1)]
-    [InlineData(1, 2, 2, 2, 3)]
-    [InlineData(1, 3, 5, 0, 1)]
+    [InlineData(1, 5, 5, 1)]
+    [InlineData(2, 2, 2, 3)]
+    [InlineData(3, 5, 0, 1)]
     public async void GetOrdersForCustomer_EnsurePaginationWorksTest(
-        int customerId, 
         int pageNumber, 
         int pageSize,
         int expectedSelectionSize,
@@ -55,13 +54,13 @@ public class OrderControllerTests : BaseIntegrationTest
     {
         // Arrange
         var client = CreateClient();
-        await CreateMockOrdersTiedToMockCustomer();
+        await CreateMockOrdersTiedToMockCustomer(FakeCustomers.FakeCustomer1);
 
         // Act
         var response = await client.GetAsync("/api/" + 
                                              nameof(Order) + 
                                              "/customer?" +
-                                             "customerId=" + customerId +
+                                             "customerId=" + FakeCustomers.FakeCustomer1.Id +
                                              "&PaginationDto.PageNumber=" + pageNumber + 
                                              "&PaginationDto.PageSize=" + pageSize)
             .Result.Content
@@ -79,28 +78,82 @@ public class OrderControllerTests : BaseIntegrationTest
         Assert.Equal(expectedTotalPages, selectionWithPaginationDto.TotalPages);
     }
 
-    private async Task<Order> CreateMockOrder()
+    [Fact]
+    public async void GetCustomerOrders_EnsureFilteringWorksTest()
     {
-        Customer mockCustomer = await CreateMockCustomer();
+        // Arrange
+        var client = CreateClient();
+        int expectedSelectionSize = 2;
+        CustomerOrdersSearchDto customerOrdersSearchDto = new CustomerOrdersSearchDto
+        {
+            MaxAmount = 500,
+            MinAmount = 0,
+            DeliveryTimeFrameDto = new DeliveryTimeFrameDto
+            {
+                DeliveryUntil = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(6),
+                DeliverySince = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(0)
+            },
+            OrderTimeFrameDto = new OrderTimeFrameDto
+            {
+                OrderTimeUntil = DateTime.UtcNow.AddHours(6),
+                OrderTimeSince = DateTime.UtcNow.AddHours(0)
+            },
+            OrderStatus = "Delivered",
+            PaginationDto = new PaginationDto
+            {
+                PageNumber = 1,
+                PageSize = 500
+            }
+        };
+        JsonContent jsonContent = JsonContent.Create(customerOrdersSearchDto);
+        await CreateMockOrdersTiedToMockCustomer(FakeCustomers.FakeCustomer1);
+
+        // Act
+        var response = await client.PostAsync("/api/" + 
+                                             nameof(Order), jsonContent)
+            .Result.Content
+            .ReadAsStringAsync();
+        
+        SelectionWithPaginationDto<Order> selectionWithPaginationDto = JsonSerializer
+            .Deserialize<SelectionWithPaginationDto<Order>>(response, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? throw new InvalidOperationException();
+
+        // Assert
+        Assert.NotNull(selectionWithPaginationDto);
+        Assert.Equal(expectedSelectionSize, selectionWithPaginationDto.Selection.Count());
+        Assert.Equal(expectedSelectionSize, selectionWithPaginationDto.Selection
+            .Count(order => order.TotalAmount <= customerOrdersSearchDto.MaxAmount &&
+                             order.TotalAmount >= customerOrdersSearchDto.MinAmount &&
+                             order.DeliveryDate <= customerOrdersSearchDto.DeliveryTimeFrameDto.DeliveryUntil &&
+                             order.DeliveryDate >= customerOrdersSearchDto.DeliveryTimeFrameDto.DeliverySince &&
+                             order.OrderDate <= customerOrdersSearchDto.OrderTimeFrameDto.OrderTimeUntil &&
+                             order.OrderDate >= customerOrdersSearchDto.OrderTimeFrameDto.OrderTimeSince &&
+                             order.Status.Equals(customerOrdersSearchDto.OrderStatus)));
+
+    }
+
+    private async Task<Order> CreateMockOrder(Customer mockCustomer, Order mockOrder)
+    {
+        await CreateMockCustomer(mockCustomer);
         var result = await _setup.DbContextInstance.Orders
-            .AddAsync(FakeOrders.FakeOrder1);
+            .AddAsync(mockOrder);
 
         await _setup.DbContextInstance.SaveChangesAsync();
         
         return result.Entity;
     }
 
-    private async Task<IEnumerable<Order>> CreateMockOrdersTiedToMockCustomer()
+    private async Task CreateMockOrdersTiedToMockCustomer(Customer mockCustomer)
     {
-        Customer mockCustomer = await CreateMockCustomer();
+        await CreateMockCustomer(mockCustomer);
         IEnumerable<Order> fakeOrdersTiedToFakeCustomer = GetAndSetMockOrdersTiedToMockCustomer(mockCustomer);
 
         await _setup.DbContextInstance.Orders
             .AddRangeAsync(fakeOrdersTiedToFakeCustomer);
 
         await _setup.DbContextInstance.SaveChangesAsync();
-
-        return fakeOrdersTiedToFakeCustomer;
     }
 
     private IEnumerable<Order> GetAndSetMockOrdersTiedToMockCustomer(Customer mockCustomer)
@@ -121,11 +174,9 @@ public class OrderControllerTests : BaseIntegrationTest
         return mockOrdersTiedToMockCustomer;
     }
 
-    private async Task<Customer> CreateMockCustomer()
+    private async Task CreateMockCustomer(Customer mockCustomer)
     {
         var result = await _setup.DbContextInstance.Customers
-            .AddAsync(FakeOrders.FakeOrder1.Customer!);
-
-        return result.Entity;
+            .AddAsync(mockCustomer);
     }
 }

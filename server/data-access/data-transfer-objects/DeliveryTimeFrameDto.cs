@@ -2,6 +2,6 @@ namespace data_access.data_transfer_objects;
 
 public class DeliveryTimeFrameDto
 {
-    private DateOnly DeliveryUntil { get; set; }
-    private DateOnly DeliverySince { get; set; }
+    public DateOnly DeliveryUntil { get; set; }
+    public DateOnly DeliverySince { get; set; }
 }

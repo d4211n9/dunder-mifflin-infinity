@@ -44,9 +44,24 @@ public class OrderRepository(MyDbContext myDbContext) : IOrderRepository
         };
     }
 
-    public IEnumerable<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto)
+    public SelectionWithPaginationDto<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto)
     {
-        throw new NotImplementedException();
+        IEnumerable<Order> filteredOrders = myDbContext.Orders
+            .Where(order => order.TotalAmount <= customerOrdersSearchDto.MaxAmount &&
+                            order.TotalAmount >= customerOrdersSearchDto.MinAmount &&
+                            order.DeliveryDate <= customerOrdersSearchDto.DeliveryTimeFrameDto.DeliveryUntil &&
+                            order.DeliveryDate >= customerOrdersSearchDto.DeliveryTimeFrameDto.DeliverySince &&
+                            order.OrderDate <= customerOrdersSearchDto.OrderTimeFrameDto.OrderTimeUntil &&
+                            order.OrderDate >= customerOrdersSearchDto.OrderTimeFrameDto.OrderTimeSince &&
+                            order.Status.Equals(customerOrdersSearchDto.OrderStatus));
+
+        return new SelectionWithPaginationDto<Order>
+        {
+            Selection = filteredOrders
+                .Skip((customerOrdersSearchDto.PaginationDto.PageNumber - 1) * customerOrdersSearchDto.PaginationDto.PageSize)
+                .Take(customerOrdersSearchDto.PaginationDto.PageSize),
+            TotalPages = (int) Math.Ceiling((double) filteredOrders.Count() / customerOrdersSearchDto.PaginationDto.PageSize)
+        };
     }
 
     public Order CreateOrder(CreateOrderDto createOrderDto)

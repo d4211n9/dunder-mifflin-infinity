@@ -45,4 +45,21 @@ public class OrderController(IOrderService orderService) : ControllerBase
             throw;
         }
     }
+
+    [Route("")]
+    [HttpPost]
+    public ActionResult<SelectionWithPaginationDto<Order>> GetCustomerOrders(
+        [FromBody] CustomerOrdersSearchDto customerOrdersSearchDto)
+    {
+        try
+        {
+            return Ok(orderService.GetCustomerOrders(customerOrdersSearchDto));
+        }
+        catch (Exception e)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            HttpContext.Response.WriteAsync("Something went wrong");
+            throw;
+        }
+    }
 }
