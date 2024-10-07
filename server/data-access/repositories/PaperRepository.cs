@@ -45,31 +45,7 @@ public class PaperRepository(MyDbContext myDbContext) : IPaperRepository
     public async Task<double> GetPriceOfPaperFromPaperId(int paperId)
     {
         Paper? paper = await myDbContext.Papers.FirstOrDefaultAsync(paper => paper.Id == paperId);
-        
+
         return paper.Price;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private bool ShowDiscontinued(bool showDiscontinued, bool isDiscontinued)
-    {
-        if (showDiscontinued == false && isDiscontinued == false) return true;
-
-        if (showDiscontinued) return true;
-
-        return false;
     }
 }
