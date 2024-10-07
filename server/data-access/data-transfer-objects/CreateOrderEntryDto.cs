@@ -2,7 +2,14 @@ namespace data_access.data_transfer_objects;
 
 public class CreateOrderEntryDto
 {
-    private int Quantity { get; set; }
-    private int ProductId { get; set; }
-    private int OrderId { get; set; }
+    public int OrderId { get; set; }
+    public int ProductId { get; set; }
+    public int Quantity { get; set; }
+
+    public CreateOrderEntryDto(CreateOrderEntryWithoutOrderIdDto orderEntryDto, int orderId)
+    {
+        OrderId = orderId;
+        ProductId = orderEntryDto.ProductId;
+        Quantity = orderEntryDto.Quantity;
+    }
 }

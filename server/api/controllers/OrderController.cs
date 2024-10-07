@@ -62,4 +62,20 @@ public class OrderController(IOrderService orderService) : ControllerBase
             throw;
         }
     }
+
+    [Route("create")]
+    [HttpPost]
+    public async Task<ActionResult<Order>> CreateOrderWithOrderEntries([FromBody] CreateOrderWithOrderEntriesDto createOrderWithOrderEntriesDto)
+    {
+        try
+        {
+            return Ok(await orderService.CreateOrder(createOrderWithOrderEntriesDto));
+        }
+        catch (Exception e)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            HttpContext.Response.WriteAsync("Something went wrong");
+            throw;
+        }
+    }
 }

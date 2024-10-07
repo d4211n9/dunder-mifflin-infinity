@@ -5,5 +5,5 @@ namespace data_access.interfaces;
 
 public interface IOrderEntryRepository
 {
-    OrderEntry CreateOrderEntry(CreateOrderEntryDto createOrderEntryDto);
+    Task<IEnumerable<OrderEntry>> CreateOrderEntries(IEnumerable<CreateOrderEntryDto> createOrderEntryDtos);
 }

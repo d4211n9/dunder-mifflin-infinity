@@ -1,7 +1,12 @@
+using data_access.models;
+
 namespace data_access.data_transfer_objects;
 
 public class CreateOrderDto
 {
-    private int CustomerId { get; set; }
-    private IEnumerable<OrderEntryDto> OrderEntryDtos { get; set; }
+    public DateTime OrderDate { get; set; }
+    public DateOnly DeliveryDate { get; set; }
+    public string Status { get; set; }
+    public double TotalAmount { get; set; }
+    public int CustomerId { get; set; }
 }

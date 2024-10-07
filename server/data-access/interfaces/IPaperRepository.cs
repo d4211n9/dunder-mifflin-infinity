@@ -9,4 +9,6 @@ public interface IPaperRepository
     void DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto);
     void ChangePaperStock(ChangePaperStockDto changePaperStockDto);
     IEnumerable<Paper> GetPaper(PaperSearchDto paperSearchDto);
+
+    Task<double> GetPriceOfPaperFromPaperId(int paperId);
 }

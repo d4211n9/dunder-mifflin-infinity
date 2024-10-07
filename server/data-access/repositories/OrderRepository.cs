@@ -1,6 +1,7 @@
 using data_access.data_transfer_objects;
 using data_access.interfaces;
 using data_access.models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace data_access.repositories;
 
@@ -64,8 +65,39 @@ public class OrderRepository(MyDbContext myDbContext) : IOrderRepository
         };
     }
 
-    public Order CreateOrder(CreateOrderDto createOrderDto)
+    public async Task<Order> CreateOrder(CreateOrderDto createOrderDto)
     {
-        throw new NotImplementedException();
+        EntityEntry<Order> createdOrder = await myDbContext.Orders.AddAsync(new Order
+        {
+            OrderDate = createOrderDto.OrderDate,
+            DeliveryDate = createOrderDto.DeliveryDate,
+            Status = createOrderDto.Status,
+            TotalAmount = createOrderDto.TotalAmount,
+            CustomerId = createOrderDto.CustomerId,
+        });
+
+        await myDbContext.SaveChangesAsync();
+
+        return createdOrder.Entity;
+    }
+
+    public async Task<bool> ChangeTotalAmount(ChangeOrderTotalAmountDto changeOrderTotalAmountDto)
+    {
+        Order orderToChangeTotalAmountOf = 
+            myDbContext.Orders.FirstOrDefault(order => order.Id == changeOrderTotalAmountDto.OrderId);
+
+        Order updatedOrder = new Order
+        {
+            Id = orderToChangeTotalAmountOf.Id,
+            OrderDate = orderToChangeTotalAmountOf.OrderDate,
+            DeliveryDate = orderToChangeTotalAmountOf.DeliveryDate,
+            Status = orderToChangeTotalAmountOf.Status,
+            TotalAmount = changeOrderTotalAmountDto.UpdatedTotalAmount,
+            CustomerId = orderToChangeTotalAmountOf.CustomerId
+        };
+
+        myDbContext.Entry(orderToChangeTotalAmountOf).CurrentValues.SetValues(updatedOrder);
+
+        return (await myDbContext.SaveChangesAsync()) > 0;
     }
 }

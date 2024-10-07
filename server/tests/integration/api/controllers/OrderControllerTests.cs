@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using data_access;
@@ -134,6 +135,59 @@ public class OrderControllerTests : BaseIntegrationTest
 
     }
 
+    [Fact]
+    public async void CreateOrderWithOrderEntries_StatusCodeIs200OkTest()
+    {
+        // Arrange
+        var client = CreateClient();
+        await CreateMockCustomer(FakeCustomers.FakeCustomer1);
+        await CreateMockPaper(FakePapers.FakePaper1);
+        var content = new CreateOrderWithOrderEntriesDto
+        {
+            CustomerId = FakeCustomers.FakeCustomer1.Id,
+            OrderEntryDtos = new List<CreateOrderEntryWithoutOrderIdDto>
+            {
+                new()
+                {
+                    ProductId = FakePapers.FakePaper1.Id,
+                    Quantity = 10
+                }
+            }
+        };
+        JsonContent jsonContent = JsonContent.Create(content);
+
+        // Act
+        var response = await client.PostAsync("/api/Order/create", jsonContent);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
     private async Task<Order> CreateMockOrder(Customer mockCustomer, Order mockOrder)
     {
         await CreateMockCustomer(mockCustomer);
@@ -178,5 +232,11 @@ public class OrderControllerTests : BaseIntegrationTest
     {
         var result = await _setup.DbContextInstance.Customers
             .AddAsync(mockCustomer);
+    }
+    
+    private async Task CreateMockPaper(Paper mockPaper)
+    {
+        var result = await _setup.DbContextInstance.Papers
+            .AddAsync(mockPaper);
     }
 }

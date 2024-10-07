@@ -8,5 +8,6 @@ public interface IOrderRepository
     Task<bool> ChangeStatus(ChangeOrderStatusDto changeOrderStatusDto);
     SelectionWithPaginationDto<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto);
     SelectionWithPaginationDto<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto);
-    Order CreateOrder(CreateOrderDto createOrderDto);
+    Task<Order> CreateOrder(CreateOrderDto createOrderDto);
+    Task<bool> ChangeTotalAmount(ChangeOrderTotalAmountDto changeOrderTotalAmountDto);
 }

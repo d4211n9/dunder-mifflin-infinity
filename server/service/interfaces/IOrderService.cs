@@ -8,5 +8,5 @@ public interface IOrderService
     Task<bool> ChangeStatus(ChangeOrderStatusDto changeOrderStatusDto);
     SelectionWithPaginationDto<Order> GetOrdersForCustomer(GetCustomerOrdersDto getCustomerOrdersDto);
     SelectionWithPaginationDto<Order> GetCustomerOrders(CustomerOrdersSearchDto customerOrdersSearchDto);
-    Order CreateOrder(CreateOrderDto createOrderDto);
+    Task<OrderDto> CreateOrder(CreateOrderWithOrderEntriesDto createOrderWithOrderEntriesDto);
 }
