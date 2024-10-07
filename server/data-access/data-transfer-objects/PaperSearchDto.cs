@@ -3,10 +3,10 @@ namespace data_access.data_transfer_objects;
 public class PaperSearchDto
 {
     
-    private int MaxPrice { get; set; }
-    private int MinPrice { get; set; }
-    private int MinStock { get; set; }
-    private bool ShowDiscontinued { get; set; }
-    private string NameSearchQuery { get; set; }
-    private PaginationDto PaginationDto { get; set; }
+    public int MaxPrice { get; set; }
+    public int MinPrice { get; set; }
+    public int MinStock { get; set; }
+    public bool ShowDiscontinued { get; set; }
+    public string NameSearchQuery { get; set; }
+    public PaginationDto PaginationDto { get; set; }
 }

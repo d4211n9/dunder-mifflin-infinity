@@ -8,24 +8,38 @@ namespace data_access.repositories;
 
 public class PaperRepository(MyDbContext myDbContext) : IPaperRepository
 {
-    public Paper CreatePaper(CreatePaperDto createPaperDto)
+    public Task<Paper> CreatePaper(CreatePaperDto createPaperDto)
     {
         throw new NotImplementedException();
     }
 
-    public void DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto)
+    public Task DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto)
     {
         throw new NotImplementedException();
     }
 
-    public void ChangePaperStock(ChangePaperStockDto changePaperStockDto)
+    public Task ChangePaperStock(ChangePaperStockDto changePaperStockDto)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Paper> GetPaper(PaperSearchDto paperSearchDto)
+    public Task<SelectionWithPaginationDto<Paper>> GetPaper(PaperSearchDto paperSearchDto)
     {
-        throw new NotImplementedException();
+        IEnumerable<Paper> filteredPapers = myDbContext.Papers
+            .Include(paper => paper.Properties)
+            .Where(paper => paper.Price <= paperSearchDto.MaxPrice &&   
+                            paper.Price >= paperSearchDto.MinPrice &&
+                            paper.Stock >= paperSearchDto.MinStock &&
+                            (paperSearchDto.ShowDiscontinued || paperSearchDto.ShowDiscontinued == false && paper.Discontinued == false)&&
+                            paper.Name.ToLower().Contains(paperSearchDto.NameSearchQuery.ToLower()));
+
+        return Task.FromResult(new SelectionWithPaginationDto<Paper>
+        {
+            Selection = filteredPapers
+                .Skip((paperSearchDto.PaginationDto.PageNumber - 1) * paperSearchDto.PaginationDto.PageSize)
+                .Take(paperSearchDto.PaginationDto.PageSize),
+            TotalPages = (int) Math.Ceiling((double) filteredPapers.Count() / paperSearchDto.PaginationDto.PageSize)
+        });
     }
 
     public async Task<double> GetPriceOfPaperFromPaperId(int paperId)
@@ -33,5 +47,29 @@ public class PaperRepository(MyDbContext myDbContext) : IPaperRepository
         Paper? paper = await myDbContext.Papers.FirstOrDefaultAsync(paper => paper.Id == paperId);
         
         return paper.Price;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private bool ShowDiscontinued(bool showDiscontinued, bool isDiscontinued)
+    {
+        if (showDiscontinued == false && isDiscontinued == false) return true;
+
+        if (showDiscontinued) return true;
+
+        return false;
     }
 }

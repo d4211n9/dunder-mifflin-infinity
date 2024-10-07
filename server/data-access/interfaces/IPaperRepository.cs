@@ -5,10 +5,10 @@ namespace data_access.interfaces;
 
 public interface IPaperRepository
 {
-    Paper CreatePaper(CreatePaperDto createPaperDto);
-    void DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto);
-    void ChangePaperStock(ChangePaperStockDto changePaperStockDto);
-    IEnumerable<Paper> GetPaper(PaperSearchDto paperSearchDto);
+    Task<Paper> CreatePaper(CreatePaperDto createPaperDto);
+    Task DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto);
+    Task ChangePaperStock(ChangePaperStockDto changePaperStockDto);
+    Task<SelectionWithPaginationDto<Paper>> GetPaper(PaperSearchDto paperSearchDto);
 
     Task<double> GetPriceOfPaperFromPaperId(int paperId);
 }
