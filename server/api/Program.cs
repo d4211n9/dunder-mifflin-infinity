@@ -21,6 +21,8 @@ public class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddCors();
+        
         builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
         builder.Services.AddScoped<IPaperPropertyRepository, PaperPropertyRepository>();
         builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -45,6 +47,9 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseCors(builder => builder
+            .AllowAnyOrigin());
 
         app.UseHttpsRedirection();
 
