@@ -8,6 +8,22 @@ namespace service.services;
 
 public class PaperService(IPaperRepository paperRepository) : IPaperService
 {
+    public Task<PaperDto> CreatePaper(CreatePaperDto createPaperDto)
+    {
+        var paperDto = new PaperDto(paperRepository.CreatePaper(createPaperDto).Result);
+        return Task.FromResult(paperDto);
+    }
+
+    public Task<bool> DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto)
+    {
+        return paperRepository.DiscontinuePaper(discontinuePaperDto);
+    }
+
+    public Task<bool> ChangePaperStock(ChangePaperStockDto changePaperStockDto)
+    {
+        return paperRepository.ChangePaperStock(changePaperStockDto);
+    }
+
     public Task<SelectionWithPaginationDto<PaperDto>> GetPapers(PaperSearchDto paperSearchDto)
     {
         SelectionWithPaginationDto<Paper> papers = paperRepository.GetPaper(paperSearchDto).Result;

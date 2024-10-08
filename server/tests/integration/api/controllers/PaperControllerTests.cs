@@ -12,7 +12,66 @@ namespace tests.integration.api.controllers;
 public class PaperControllerTests : BaseIntegrationTest
 {
     public PaperControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper) {}
+
+    [Fact]
+    public async void CreatePaper_StatusCodeIs200OkTest()
+    {
+        // Arrange
+        var client = CreateClient();
+        var createPaperDto = new CreatePaperDto
+        {
+            Name = FakePapers.FakePaper1.Name,
+            Stock = FakePapers.FakePaper1.Stock,
+            Price = FakePapers.FakePaper1.Price
+        };
+        var jsonContent = JsonContent.Create(createPaperDto);
+        
+        // Act
+        var response = await client.PostAsync("/api/paper/create", jsonContent);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
     
+    [Fact]
+    public async void DiscontinuePaper_StatusCodeIs200OkTest()
+    {
+        // Arrange
+        var client = CreateClient();
+        await CreateMockPaper(FakePapers.FakePaper1);
+        var discontinuePaperDto = new DiscontinuePaperDto
+        {
+            PaperId = FakePapers.FakePaper1.Id,
+            Discontinue = !FakePapers.FakePaper1.Discontinued
+        };
+        var jsonContent = JsonContent.Create(discontinuePaperDto);
+
+        // Act
+        var response = await client.PutAsync("/api/paper/discontinue", jsonContent);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+    
+    [Fact]
+    public async void ChangePaperStock_StatusCodeIs200OkTest()
+    {
+        // Arrange
+        var client = CreateClient();
+        await CreateMockPaper(FakePapers.FakePaper1);
+        var changePaperStockDto = new ChangePaperStockDto
+        {
+            PaperId = FakePapers.FakePaper1.Id,
+            ChangedStock = FakePapers.FakePaper1.Stock + 100
+        };
+        var jsonContent = JsonContent.Create(changePaperStockDto);
+
+        // Act
+        var response = await client.PutAsync("/api/paper/stock", jsonContent);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
     
     [Fact]
     public async void GetPapers_StatusCodeIs200OkTest()
@@ -72,8 +131,10 @@ public class PaperControllerTests : BaseIntegrationTest
         Assert.Empty(createdProperty.Papers);
     }
 
-    private async Task CreateMockPaper(Paper mockPaper)
+    private Task CreateMockPaper(Paper mockPaper)
     {
-        await _setup.DbContextInstance.Papers.AddAsync(mockPaper);
+        _setup.DbContextInstance.Papers.Add(mockPaper);
+
+        return Task.FromResult(_setup.DbContextInstance.SaveChanges());
     }
 }

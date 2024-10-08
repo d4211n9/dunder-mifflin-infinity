@@ -10,17 +10,55 @@ public class PaperRepository(MyDbContext myDbContext) : IPaperRepository
 {
     public Task<Paper> CreatePaper(CreatePaperDto createPaperDto)
     {
-        throw new NotImplementedException();
+        EntityEntry<Paper> createdPaper = myDbContext.Papers.Add(new Paper
+        {
+            Name = createPaperDto.Name,
+            Discontinued = false,
+            Stock = createPaperDto.Stock,
+            Price = createPaperDto.Price,
+        });
+
+        myDbContext.SaveChanges();
+
+        return Task.FromResult(createdPaper.Entity);
     }
 
-    public Task DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto)
+    public async Task<bool> DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto)
     {
-        throw new NotImplementedException();
+        Paper paperToChangeDicontinuedOf = 
+            myDbContext.Papers.FirstOrDefault(paper => paper.Id == discontinuePaperDto.PaperId);
+
+        Paper updatedPaper = new Paper
+        {
+            Id = paperToChangeDicontinuedOf.Id,
+            Name = paperToChangeDicontinuedOf.Name,
+            Discontinued = discontinuePaperDto.Discontinue,
+            Stock = paperToChangeDicontinuedOf.Stock,
+            Price = paperToChangeDicontinuedOf.Price
+        };
+
+        myDbContext.Entry(paperToChangeDicontinuedOf).CurrentValues.SetValues(updatedPaper);
+
+        return await myDbContext.SaveChangesAsync() > 0;
     }
 
-    public Task ChangePaperStock(ChangePaperStockDto changePaperStockDto)
+    public async Task<bool> ChangePaperStock(ChangePaperStockDto changePaperStockDto)
     {
-        throw new NotImplementedException();
+        Paper paperToChangeStockOf = 
+            myDbContext.Papers.FirstOrDefault(paper => paper.Id == changePaperStockDto.PaperId);
+
+        Paper updatedPaper = new Paper
+        {
+            Id = paperToChangeStockOf.Id,
+            Name = paperToChangeStockOf.Name,
+            Discontinued = paperToChangeStockOf.Discontinued,
+            Stock = changePaperStockDto.ChangedStock,
+            Price = paperToChangeStockOf.Price
+        };
+
+        myDbContext.Entry(paperToChangeStockOf).CurrentValues.SetValues(updatedPaper);
+
+        return await myDbContext.SaveChangesAsync() > 0;
     }
 
     public Task<SelectionWithPaginationDto<Paper>> GetPaper(PaperSearchDto paperSearchDto)

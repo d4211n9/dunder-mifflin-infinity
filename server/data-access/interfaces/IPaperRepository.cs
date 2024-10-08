@@ -6,8 +6,8 @@ namespace data_access.interfaces;
 public interface IPaperRepository
 {
     Task<Paper> CreatePaper(CreatePaperDto createPaperDto);
-    Task DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto);
-    Task ChangePaperStock(ChangePaperStockDto changePaperStockDto);
+    Task<bool> DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto);
+    Task<bool> ChangePaperStock(ChangePaperStockDto changePaperStockDto);
     Task<SelectionWithPaginationDto<Paper>> GetPaper(PaperSearchDto paperSearchDto);
 
     Task<double> GetPriceOfPaperFromPaperId(int paperId);
