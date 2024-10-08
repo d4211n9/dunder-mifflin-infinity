@@ -1,0 +1,1 @@
+export const base_api_route = 'http://localhost:5257/api/';
