@@ -66,8 +66,6 @@ export default function PaperComponent() {
                 </form>
             </div>
         </div>
-
-        <Toaster />
     </>
 
     async function OnSubmit(event) {

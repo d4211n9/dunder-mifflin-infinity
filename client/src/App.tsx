@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import PaperOverviewComponent from "./components/PaperOverviewComponent.tsx";
 import CreateNewPaper from "./components/CreateNewPaper.tsx";
 import PaperComponent from "./components/PaperComponent.tsx";
+import {Toaster} from "react-hot-toast";
 
 function App() {
     return <>
@@ -15,6 +16,7 @@ function App() {
                 <Route path='/paper/:paperId' element={<PaperComponent />} />
             </Routes>
         </BrowserRouter>
+        <Toaster />
     </>;
 }
 
