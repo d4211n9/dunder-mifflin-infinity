@@ -7,7 +7,7 @@ function App() {
     return <>
         <BrowserRouter>
             <Routes>
-                <Route path='/orderHistory/:customerId/:pageNumber/:pageSize' element={<OrderHistoryComponent />}/>
+                <Route path='/orderHistory/:customerId' element={<OrderHistoryComponent />}/>
                 <Route path='/paperOverview' element={<PaperOverviewComponent />}/>
             </Routes>
         </BrowserRouter>

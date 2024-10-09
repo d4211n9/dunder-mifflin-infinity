@@ -8,12 +8,13 @@ import {useAtom} from "jotai";
 import {order_history_atom} from "../atoms/OrderHistoryAtom.ts";
 
 export default function OrderHistoryComponent() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const params = useParams();
     const base_component_route: string = 'order';
     const [customerOrders, setCustomerOrders] = useAtom(order_history_atom);
     const customerId = params['customerId'] as Number;
-    const pageNumber: number = params['pageNumber'] as Number;
-    const pageSize: number = params['pageSize'] as Number
+    const pageNumber: number = searchParams.get('pageNumber') as Number;
+    const pageSize: number = searchParams.get('pageSize') as Number
 
     useEffect(() => {
         OrdersForCustomer(customerId, pageNumber, pageSize)
