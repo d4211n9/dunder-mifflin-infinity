@@ -8,8 +8,8 @@ function App() {
     return <>
         <BrowserRouter>
             <Routes>
-                <Route path='/orderHistory/:customerId' element={<OrderHistoryComponent />}/>
-                <Route path='/paperOverview' element={<PaperOverviewComponent />}/>
+                <Route path='/order/history/:customerId' element={<OrderHistoryComponent />}/>
+                <Route path='/paper/overview' element={<PaperOverviewComponent />}/>
                 <Route path='/paper/create' element={<CreateNewPaper />}/>
             </Routes>
         </BrowserRouter>
