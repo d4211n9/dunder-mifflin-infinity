@@ -66,8 +66,6 @@ export default function PaperOverviewComponent() {
                 </tbody>
             </table>
         </div>
-
-        <CreateNewPaper />
     </>
 
 
