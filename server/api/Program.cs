@@ -49,7 +49,8 @@ public class Program
         }
 
         app.UseCors(builder => builder
-            .AllowAnyOrigin());
+            .AllowAnyOrigin()
+            .AllowAnyHeader());
 
         app.UseHttpsRedirection();
 
