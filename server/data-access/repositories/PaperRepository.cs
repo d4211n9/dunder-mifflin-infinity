@@ -86,4 +86,13 @@ public class PaperRepository(MyDbContext myDbContext) : IPaperRepository
 
         return paper.Price;
     }
+
+    public Task<Paper?> GetPaperById(int paperId)
+    {
+        Paper? paper = myDbContext.Papers
+            .Include(paper => paper.Properties)
+            .FirstOrDefault(paper => paper.Id == paperId);
+
+        return Task.FromResult(paper);
+    }
 }

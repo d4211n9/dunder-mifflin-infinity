@@ -9,6 +9,6 @@ public interface IPaperRepository
     Task<bool> DiscontinuePaper(DiscontinuePaperDto discontinuePaperDto);
     Task<bool> ChangePaperStock(ChangePaperStockDto changePaperStockDto);
     Task<SelectionWithPaginationDto<Paper>> GetPaper(PaperSearchDto paperSearchDto);
-
     Task<double> GetPriceOfPaperFromPaperId(int paperId);
+    Task<Paper?> GetPaperById(int paperId);
 }

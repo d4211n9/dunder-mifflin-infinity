@@ -33,12 +33,8 @@ public class PaperController(
     {
         try
         {
-            bool success = await paperService.DiscontinuePaper(discontinuePaperDto);
-
-            if (success)
-                return Ok();
-
-            throw new Exception("Failed to discontinue paper");
+            await paperService.DiscontinuePaper(discontinuePaperDto);
+            return Ok();
         }
         catch (Exception e)
         {
@@ -53,13 +49,9 @@ public class PaperController(
     public async Task<ActionResult> ChangePaperStock([FromBody] ChangePaperStockDto changePaperStockDto)
     {
         try
-        {
-            bool success = await paperService.ChangePaperStock(changePaperStockDto);
-
-            if (success)
-                return Ok();
-
-            throw new Exception("Failed to change paper stock");
+        { 
+            await paperService.ChangePaperStock(changePaperStockDto);
+            return Ok();
         }
         catch (Exception e)
         {
@@ -91,6 +83,28 @@ public class PaperController(
         try
         {
             return Ok(paperPropertyService.CreateProperty(propertyName));
+        }
+        catch (Exception e)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            HttpContext.Response.WriteAsJsonAsync("Something went wrong");
+            throw;
+        }
+    }
+
+    [Route("{paperId}")]
+    [HttpGet]
+    public async Task<ActionResult<PaperDto>> GetPaperById([FromRoute] int paperId)
+    {
+        try
+        {
+            return Ok(await paperService.GetPaperById(paperId));
+        }
+        catch (NullReferenceException e)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            HttpContext.Response.WriteAsJsonAsync(e.Message);
+            throw;
         }
         catch (Exception e)
         {

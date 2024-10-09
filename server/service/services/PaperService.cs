@@ -35,19 +35,15 @@ public class PaperService(IPaperRepository paperRepository) : IPaperService
         return Task.FromResult(PaperDtos);
     }
 
+    public async Task<PaperDto> GetPaperById(int paperId)
+    {
+        Paper? paper = await paperRepository.GetPaperById(paperId);
 
+        if (paper == null)
+            throw new NullReferenceException("Could not find paper with id");
 
-
-
-
-
-
-
-
-
-
-
-
+        return new PaperDto(paper);
+    }
 
 
     private IEnumerable<PaperDto> ConvertPapersToPaperDtos(IEnumerable<Paper> papers)
