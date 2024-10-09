@@ -5,6 +5,7 @@ import PaperOverviewComponent from "./components/PaperOverviewComponent.tsx";
 import CreateNewPaper from "./components/CreateNewPaper.tsx";
 import PaperComponent from "./components/PaperComponent.tsx";
 import {Toaster} from "react-hot-toast";
+import CreatePaperPropertyComponent from "./components/CreatePaperPropertyComponent.tsx";
 
 function App() {
     return <>
@@ -14,6 +15,7 @@ function App() {
                 <Route path='/paper/overview' element={<PaperOverviewComponent />}/>
                 <Route path='/paper/create' element={<CreateNewPaper />}/>
                 <Route path='/paper/:paperId' element={<PaperComponent />} />
+                <Route path='/paper/property/create' element={<CreatePaperPropertyComponent />} />
             </Routes>
         </BrowserRouter>
         <Toaster />
