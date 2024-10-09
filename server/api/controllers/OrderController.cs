@@ -15,12 +15,8 @@ public class OrderController(IOrderService orderService) : ControllerBase
     {
         try
         {
-            bool isSuccess = await orderService.ChangeStatus(changeOrderStatusDto);
-            
-            if (isSuccess)
-                return Ok();
-
-            throw new Exception("Failed to update status");
+             await orderService.ChangeStatus(changeOrderStatusDto);
+             return Ok();
         }
         catch (Exception e)
         {
