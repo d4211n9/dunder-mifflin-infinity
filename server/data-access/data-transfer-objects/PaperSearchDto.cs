@@ -7,6 +7,6 @@ public class PaperSearchDto
     public int MinPrice { get; set; }
     public int MinStock { get; set; }
     public bool ShowDiscontinued { get; set; }
-    public string NameSearchQuery { get; set; }
-    public PaginationDto PaginationDto { get; set; }
+    public string NameSearchQuery { get; set; } = "";
+    public PaginationDto PaginationDto { get; set; } = new();
 }
