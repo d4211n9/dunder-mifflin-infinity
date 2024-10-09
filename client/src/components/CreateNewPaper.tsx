@@ -4,10 +4,12 @@ import {CreatePaper} from "../models/CreatePaper.ts";
 import {Paper} from "../models/Paper.ts";
 import toast from "react-hot-toast";
 import {base_api_route} from "../helper/ApiHelper.ts";
+import {paper_overview_atom} from "../atoms/PaperOverviewAtom.ts";
 
 export default function CreateNewPaper() {
     const base_component_route: string = 'paper/create';
     const [newPaper, setNewPaper] = useAtom(create_new_paper_atom);
+    const [papers, setPapers] = useAtom(paper_overview_atom);
 
     return <>
         <form className="flex flex-col justify-center items-center" onSubmit={OnFormSubmit}>
@@ -48,7 +50,17 @@ export default function CreateNewPaper() {
                 toast.error('Failed to create paper')
             });
 
-        return data;
+        if (data)
+            AddNewPaper(data);
+    }
+
+    function AddNewPaper(paper: Paper) {
+        let papersCopy = [...papers];
+        papersCopy.sort(paper => paper.id);
+        papersCopy.push(paper);
+
+
+        setPapers(papersCopy);
     }
 
     function OnNameInput(event) {

@@ -9,6 +9,7 @@ import {Paper} from "../models/Paper.ts";
 import {useEffect} from "react";
 import {Params, useParams, useSearchParams} from "react-router-dom";
 import {Pagination} from "../models/Pagination.ts";
+import CreateNewPaper from "./CreateNewPaper.tsx";
 
 export default function PaperOverviewComponent() {
     const base_component_route: string = 'paper';
@@ -37,7 +38,7 @@ export default function PaperOverviewComponent() {
                     <th onClick={SortPapersById}>ID</th>
                     <th>Name</th>
                     <th>Discontinued</th>
-                    <th onClick={SortPapersByPrice}>Price</th>
+                    <th>Price</th>
                     <th>Stock</th>
                     <th>Properties</th>
                 </tr>
@@ -65,15 +66,10 @@ export default function PaperOverviewComponent() {
                 </tbody>
             </table>
         </div>
+
+        <CreateNewPaper />
     </>
 
-
-    function SortPapersByPrice() {
-        let papersCopy = [...papers];
-        papersCopy.sort(paper => paper.price);
-
-        setPapers(papersCopy);
-    }
 
     function SortPapersById() {
         let papersCopy = [...papers];
