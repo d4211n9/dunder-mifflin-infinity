@@ -4,11 +4,13 @@ import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {FullOrder} from "../models/FullOrder.ts";
 import {useParams, useSearchParams} from "react-router-dom";
+import {useAtom} from "jotai";
+import {order_history_atom} from "../atoms/OrderHistoryAtom.ts";
 
 export default function OrderHistoryComponent() {
     const params = useParams();
     const base_component_route: string = 'order';
-    const [customerOrders, setCustomerOrders] = useState<FullOrder[]>([]);
+    const [customerOrders, setCustomerOrders] = useAtom(order_history_atom);
     const customerId = params['customerId'] as Number;
     const pageNumber: number = params['pageNumber'] as Number;
     const pageSize: number = params['pageSize'] as Number
