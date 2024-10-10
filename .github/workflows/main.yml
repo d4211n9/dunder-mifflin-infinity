@@ -1,11 +1,11 @@
 name: Main Workflow
 on:
-  workflow_dispatch:
   push:
     branches: ["main"]
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: ["main"]
+  workflow_dispatch:
 jobs:
   server_test_job:
     name: Server test
