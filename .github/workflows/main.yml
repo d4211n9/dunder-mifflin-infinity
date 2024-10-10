@@ -20,11 +20,9 @@ jobs:
         run:
           dotnet build server/
 
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
       - uses: adambirds/docker-compose-action@v1.5.0
         with:
+          up-flags: "--build"
           test-container: "dotnet_test_container"
           test-command: 
             "dotnet test server/test/"
