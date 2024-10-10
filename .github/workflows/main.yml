@@ -25,6 +25,6 @@ jobs:
           dotnet-version: "8.0.x"
       - uses: adambirds/docker-compose-action@v1.5.0
         with:
-          test-container: "dotnet test container"
+          test-container: "dotnet_test_container"
           test-command: 
             "dotnet test server/test/"
