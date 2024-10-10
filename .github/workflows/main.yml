@@ -13,16 +13,18 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker-compose.yml"
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"  
       - name: "Build"
         run:
           dotnet build server/
-
-      - uses: adambirds/docker-compose-action@v1.5.0
-        with:
-          up-flags: "--build"
-          test-container: "dotnet_test_container"
-          test-command: 
-            "dotnet test server/test/"
+      - name: "Test"
+        run:
+          dotnet test server/tests/
