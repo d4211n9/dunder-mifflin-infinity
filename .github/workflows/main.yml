@@ -5,6 +5,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: ["main"]
+  workflow_dispatch:
 jobs:
   server_test_job:
     name: Server test
