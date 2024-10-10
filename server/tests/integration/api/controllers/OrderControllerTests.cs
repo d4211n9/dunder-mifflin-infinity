@@ -6,6 +6,7 @@ using data_access.data_transfer_objects;
 using data_access.models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using PgCtx;
 using tests.helper;
 using Xunit.Abstractions;
 
@@ -142,6 +143,9 @@ public class OrderControllerTests : BaseIntegrationTest
         var client = CreateClient();
         await CreateMockCustomer(FakeCustomers.FakeCustomer1);
         await CreateMockPaper(FakePapers.FakePaper1);
+        
+
+        
         var content = new CreateOrderWithOrderEntriesDto
         {
             CustomerId = FakeCustomers.FakeCustomer1.Id,
@@ -154,10 +158,9 @@ public class OrderControllerTests : BaseIntegrationTest
                 }
             }
         };
-        JsonContent jsonContent = JsonContent.Create(content);
 
         // Act
-        var response = await client.PostAsync("/api/Order/create", jsonContent);
+        var response = await client.PostAsJsonAsync("/api/Order/create", content);
         
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -238,5 +241,7 @@ public class OrderControllerTests : BaseIntegrationTest
     {
         var result = await _setup.DbContextInstance.Papers
             .AddAsync(mockPaper);
+
+        await _setup.DbContextInstance.SaveChangesAsync();
     }
 }

@@ -4,9 +4,11 @@ namespace tests.helper;
 
 public class FakeOrders
 {
+    private static Random _random = new Random();
+    
     public static readonly Order FakeOrder1 = new Order
     {
-        Id = 1,
+        Id = _random.Next(1, Int32.MaxValue),
         OrderDate = DateTime.UtcNow.AddHours(1),
         DeliveryDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1),
         Status = "Shipping",
@@ -18,7 +20,7 @@ public class FakeOrders
     
     public static readonly Order FakeOrder2 = new Order
     {
-        Id = 2,
+        Id = _random.Next(1, Int32.MaxValue),
         OrderDate = DateTime.UtcNow.AddHours(5),
         DeliveryDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(4),
         Status = "Delivered",
@@ -30,7 +32,7 @@ public class FakeOrders
     
     public static readonly Order FakeOrder3 = new Order
     {
-        Id = 3,
+        Id = _random.Next(1, Int32.MaxValue),
         OrderDate = DateTime.UtcNow.AddHours(3),
         DeliveryDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(4),
         Status = "Shipping",
@@ -42,7 +44,7 @@ public class FakeOrders
     
     public static readonly Order FakeOrder4 = new Order
     {
-        Id = 4,
+        Id = _random.Next(1, Int32.MaxValue),
         OrderDate = DateTime.UtcNow.AddHours(2),
         DeliveryDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(2),
         Status = "Delivered",
@@ -54,7 +56,7 @@ public class FakeOrders
     
     public static readonly Order FakeOrder5 = new Order
     {
-        Id = 5,
+        Id = _random.Next(1, Int32.MaxValue),
         OrderDate = DateTime.UtcNow.AddHours(4),
         DeliveryDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(5),
         Status = "Shipping",
