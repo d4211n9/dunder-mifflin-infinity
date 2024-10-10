@@ -16,12 +16,13 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
+          
+      - name: "Build"
+        run:
+          dotnet build server/
+          
       - uses: adambirds/docker-compose-action@v1.5.0
         with:
           test-container: "dotnet test container"
           test-command: 
             "dotnet test server/test/"
-    
-      - name: "Build"
-        run:
-          dotnet build server/
