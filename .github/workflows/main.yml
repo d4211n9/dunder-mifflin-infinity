@@ -20,5 +20,8 @@ jobs:
         with:
           test-container: "dotnet test container"
           test-command: 
-            "dotnet build server/"
             "dotnet test server/test/"
+            
+      - name: "Build"
+        run:
+          dotnet build server/
