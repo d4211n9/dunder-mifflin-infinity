@@ -15,20 +15,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
-
-      - name: Start docker container
-        run: docker-compose up -d  
-
-      - name: Wait for docker container to startup
-        uses: jakejarvis/wait-action@master
+      - uses: adambirds/docker-compose-action@v1.5.0
         with:
-          time: '8s'
-
-      - name: Restore NuGet packages
-        run: dotnet restore
-        
-      - name: Build
-        run: dotnet build server/
-        
-      - name: Test
-        run: dotnet test server/test/
+          test-container: "dotnet test container"
+          test-command: 
+            "dotnet build server/"
+            "dotnet test server/test/"
